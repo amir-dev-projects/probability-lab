@@ -12,8 +12,8 @@ The initial application foundation is being built. Lotto Max is the first game, 
 - [x] Static export configuration for GitHub Pages
 - [x] Initial game catalogue and deterministic analytics primitives
 - [x] Document primary and secondary Lotto Max source references
-- [ ] Verify official game-rule periods and historical draw sources
-- [ ] Import and validate the official Lotto Max historical dataset
+- [x] Build validated Lotto Max main-draw history and MAXMILLIONS side-draw dataset
+- [ ] Add MAXPLUS results and historical prize-tier / payout data
 - [ ] Build descriptive analytics and visualizations
 - [ ] Implement chronological walk-forward backtesting
 - [ ] Add transparent number-set generation and CSV export
@@ -22,39 +22,41 @@ The initial application foundation is being built. Lotto Max is the first game, 
 
 ## Data sources
 
-See [docs/data-sources.md](docs/data-sources.md) for the source register, source roles, known coverage gaps, and validation rules.
+See [docs/data-sources.md](docs/data-sources.md) for the source register, rule eras, data corrections, exclusions, and validation process.
 
 ## Development
 
-Requires Node.js 22 or newer.
+Requires Node.js 22 or newer, Python 3, and Poppler's `pdftotext` utility to rebuild the historical data.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Run a production static build:
+Run the historical data generator before a local production build:
 
 ```bash
+python3 scripts/build_lotto_max_data.py
 npm run build
 ```
 
-The exported site is written to `out/`. The GitHub Actions workflow publishes it to GitHub Pages.
+The exported site is written to `out/`. The GitHub Actions workflow refreshes and commits the validated data before publishing the site to GitHub Pages.
 
 ## Research principles
 
 1. Keep each game's rules versioned by the date of the draw.
-2. Keep main numbers separate from bonus numbers and add-on games.
-3. Use chronological train/test splits; never use future draws to evaluate a past strategy.
-4. Compare every strategy with random selections under the same rules.
-5. Report sample sizes, uncertainty, and the number of strategies tested.
-6. Treat hot/cold numbers, gaps, pairs, and sums as descriptive statistics unless they show robust out-of-sample evidence.
+2. Keep main numbers separate from bonus numbers and side-draw games.
+3. Keep MAXPLUS and MAXMILLIONS separate from the main draw; EXTRA is excluded.
+4. Use chronological train/test splits; never use future draws to evaluate a past strategy.
+5. Compare every strategy with random selections under the same rules.
+6. Report sample sizes, uncertainty, and the number of strategies tested.
+7. Treat hot/cold numbers, gaps, pairs, and sums as descriptive statistics unless they show robust out-of-sample evidence.
 
 ## Technology
 
 - Next.js and React
 - TypeScript analytics with no server dependency
 - Static hosting on GitHub Pages
-- Historical data stored as version-controlled CSV/JSON
+- Historical data stored as version-controlled JSON
 
 A database or server-side processing can be considered later if the project needs it. No paid AI API is required for the core statistical engine.
