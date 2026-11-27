@@ -11,6 +11,7 @@ The initial application foundation is being built. Lotto Max is the first game, 
 - [x] Next.js + TypeScript application foundation
 - [x] Static export configuration for GitHub Pages
 - [x] Initial game catalogue and deterministic analytics primitives
+- [x] Document primary and secondary Lotto Max source references
 - [ ] Verify official game-rule periods and historical draw sources
 - [ ] Import and validate the official Lotto Max historical dataset
 - [ ] Build descriptive analytics and visualizations
@@ -18,6 +19,10 @@ The initial application foundation is being built. Lotto Max is the first game, 
 - [ ] Add transparent number-set generation and CSV export
 - [ ] Add Daily Grand, then Lotto 6/49
 - [ ] Consider an AI research assistant for explaining results
+
+## Data sources
+
+See [docs/data-sources.md](docs/data-sources.md) for the source register, source roles, known coverage gaps, and validation rules.
 
 ## Development
 
