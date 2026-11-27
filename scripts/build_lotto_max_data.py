@@ -22,9 +22,9 @@ SUPPLEMENT_PATH = ROOT / "data/lotto-max/supplemental-2026-11.json"
 OUTPUT_DIR = ROOT / "public/data/lotto-max"
 MONTHS = "January February March April May June July August September October November December".split()
 DATE_RE = re.compile(
-    r"^\\s*(" + "|".join(MONTHS) + r")\\s+(\\d{1,2}),?\\s+(20\\d{2})\\s+(.*)$"
+    r"^\s*(" + "|".join(MONTHS) + r")\s+(\d{1,2}),?\s+(20\d{2})\s+(.*)$"
 )
-DRAW_LABEL_RE = re.compile(r"Draw\\s*#\\s*(\\d+)", re.I)
+DRAW_LABEL_RE = re.compile(r"Draw\s*#\s*(\d+)", re.I)
 
 # The WCLC PDF text layer has a small number of malformed rows. These values
 # are corrected only for the named dates and carry an explicit audit note.
@@ -93,7 +93,7 @@ def parse_archive(text: str) -> tuple[list[dict], list[dict], list[dict]]:
             )
             in_maxmillions = False
             date_key = current_date.isoformat()
-            number_tokens = [int(x) for x in re.findall(r"\\d+", date_match.group(4))]
+            number_tokens = [int(x) for x in re.findall(r"\d+", date_match.group(4))]
 
             if date_key in CORRECTIONS:
                 correction = CORRECTIONS[date_key]
@@ -140,12 +140,12 @@ def parse_archive(text: str) -> tuple[list[dict], list[dict], list[dict]]:
             )
             continue
 
-        if re.search(r"Max\\s*Millions|Maxmillions", line, re.I):
+        if re.search(r"Max\s*Millions|Maxmillions", line, re.I):
             in_maxmillions = True
 
         label = DRAW_LABEL_RE.search(line)
         if in_maxmillions and label and current_date:
-            values = [int(x) for x in re.findall(r"\\d+", line[label.end() :])]
+            values = [int(x) for x in re.findall(r"\d+", line[label.end() :])]
             series_number = int(label.group(1))
             era, pool = rule_era(current_date)
             if (
@@ -325,10 +325,10 @@ def main() -> None:
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUTPUT_DIR / "draws.json").write_text(
-        json.dumps(draws_payload, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(draws_payload, indent=2) + "\n", encoding="utf-8"
     )
     (OUTPUT_DIR / "maxmillions.json").write_text(
-        json.dumps(mm_payload, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(mm_payload, indent=2) + "\n", encoding="utf-8"
     )
     print(
         f"Built {len(all_draws)} main draws: "
