@@ -1,0 +1,108 @@
+{
+  "game": "lotto-max",
+  "datasetType": "verified-supplemental-draws",
+  "coverage": {
+    "from": "2026-11-06",
+    "through": "2026-11-24"
+  },
+  "retrievedAndVerifiedOn": "2026-11-26",
+  "note": "These six records supplement the WCLC since-inception PDF, which ends on 2026-11-03. This file is not the complete historical dataset. Only the seven main numbers and bonus number are included; Maxmillions, MaxPlus, and EXTRA are intentionally excluded.",
+  "records": [
+    {
+      "drawDate": "2026-11-06",
+      "mainNumbers": [
+        10,
+        23,
+        32,
+        43,
+        46,
+        48,
+        51
+      ],
+      "bonusNumber": 30,
+      "primarySource": "https://www.wclc.com/winning-numbers/lottomax-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    },
+    {
+      "drawDate": "2026-11-10",
+      "mainNumbers": [
+        3,
+        11,
+        31,
+        37,
+        44,
+        47,
+        50
+      ],
+      "bonusNumber": 17,
+      "primarySource": "https://www.wclc.com/winning-numbers/lottomax-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    },
+    {
+      "drawDate": "2026-11-13",
+      "mainNumbers": [
+        4,
+        9,
+        15,
+        25,
+        27,
+        44,
+        47
+      ],
+      "bonusNumber": 29,
+      "primarySource": "https://www.wclc.com/winning-numbers/lotto-max-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    },
+    {
+      "drawDate": "2026-11-17",
+      "mainNumbers": [
+        3,
+        4,
+        10,
+        24,
+        32,
+        46,
+        52
+      ],
+      "bonusNumber": 7,
+      "primarySource": "https://www.wclc.com/winning-numbers/lotto-max-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    },
+    {
+      "drawDate": "2026-11-20",
+      "mainNumbers": [
+        6,
+        8,
+        20,
+        33,
+        40,
+        44,
+        47
+      ],
+      "bonusNumber": 41,
+      "primarySource": "https://www.wclc.com/winning-numbers/lotto-max-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    },
+    {
+      "drawDate": "2026-11-24",
+      "mainNumbers": [
+        10,
+        11,
+        13,
+        17,
+        20,
+        29,
+        39
+      ],
+      "bonusNumber": 19,
+      "primarySource": "https://www.wclc.com/winning-numbers/lotto-max-extra.htm",
+      "secondarySource": "https://www.lottomaxnumbers.com/past-numbers",
+      "validation": "WCLC and secondary listing agree"
+    }
+  ]
+}
