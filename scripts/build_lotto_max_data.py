@@ -293,7 +293,7 @@ def main() -> None:
         "excluded": [
             "EXTRA (machine-generated add-on; intentionally out of scope)"
         ],
-        "records": all_draws,
+        "records": [\n            {\n                "date": record["drawDate"],\n                **{key: value for key, value in record.items() if key != "drawDate"},\n            }\n            for record in all_draws\n        ],
     }
 
     mm_payload = {
