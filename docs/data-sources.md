@@ -9,7 +9,7 @@ This document records the sources used to assemble and verify LotteryLab's Lotto
 ### 1. WCLC — primary source
 
 - [WCLC recent winning numbers](https://www.wclc.com/recent-winning-numbers.htm)
-- [WCLC Lotto Max and EXTRA results](https://www.wclc.com/winning-numbers/lotto-max-extra.htm)
+- [WCLC Lotto Max results](https://www.wclc.com/winning-numbers/lotto-max-extra.htm)
 - [WCLC Lotto Max since inception archive](https://www.wclc.com/display-on/display-on-downloads/lotto-max-since-inception.htm)
 - [WCLC Lotto Max game page and prize structure](https://www.wclc.com/games/lotto-max.htm)
 - [WCLC Lotto Max game conditions](https://www.wclc.com/display-on/display-on-downloads/lotto-max-3.0-game-conditions.htm)
@@ -33,19 +33,20 @@ Use this independent third-party website to cross-check draw dates, main numbers
 
 A CSV previously supplied in this project covers a recent period ending November 24, 2026. Treat it as a candidate comparison dataset only until its provenance and each draw are checked against authoritative results.
 
-## Prize categories and side-prize analysis
+## Prize categories and analysis scope
 
-LotteryLab must model the advertised prize configuration separately from the winning results and payouts actually reported after a draw. The categories must not be combined into the seven-number main draw.
+LotteryLab focuses on prizes that can be won through number selections made by the player, plus the official prize outcomes associated with those selections.
 
 - **Main jackpot:** the main 7/7 prize pool.
 - **MAXPLUS:** separate $100,000 exact-match series introduced with the April 2026 game changes. The number of series is tied to the advertised jackpot amount (for example, a $40 million jackpot has 40 MAXPLUS series).
 - **MAXMILLIONS:** separate $1 million exact-match series when the main jackpot reaches the applicable threshold.
 - **Main-draw subsidiary prizes:** match tiers such as 6/7 + bonus, 6/7, 5/7 + bonus, and others. Record the number of winners and actual payout per tier when official result detail is available.
-- **EXTRA and provincial add-ons:** separate products and must not be included in Lotto Max main or side-prize totals unless the analysis explicitly covers them.
+
+**EXTRA is out of scope.** Its numbers are machine-generated and are not selected by the player, so LotteryLab will not import, analyze, compare, or include EXTRA results in statistics, prize-value comparisons, or number-selection research. This is an intentional product-scope decision, not a data limitation.
 
 For every draw, keep these concepts distinct:
 1. Advertised prize configuration before the draw (jackpot amount, MAXPLUS count, MAXMILLIONS count).
-2. Actual side-draw number sets after the draw (each series, prize amount, and winners).
+2. Actual side-draw number sets after the draw (each MAXPLUS / MAXMILLIONS series, prize amount, and winners).
 3. Main-draw prize-tier results (winner counts and actual payouts).
 4. Sales, where officially published, so prize-pool and payout analysis can be contextualized.
 
@@ -61,7 +62,7 @@ The pre-draw configuration is stored separately in [data/lotto-max/prize-configu
 
 The WCLC PDF archive ends on November 3, 2026. The six subsequent main draws from November 6 through November 24 have been checked against WCLC and LottoMaxNumbers.com's Past Numbers page.
 
-The verified records are stored in [data/lotto-max/supplemental-2026-11.json](../data/lotto-max/supplemental-2026-11.json). This is a six-draw supplement, **not** the complete historical dataset. It contains only the seven main numbers and bonus number. Side-prize records are maintained separately.
+The verified records are stored in [data/lotto-max/supplemental-2026-11.json](../data/lotto-max/supplemental-2026-11.json). This is a six-draw supplement, **not** the complete historical dataset. It contains only the seven main numbers and bonus number. MAXPLUS and MAXMILLIONS records, when available, are maintained separately. EXTRA is excluded from the project.
 
 ## Rule-history notes requiring official confirmation
 
@@ -77,9 +78,9 @@ Confirm effective dates and full mechanics against official WCLC / Interprovinci
 1. Record the draw date and exactly seven main numbers.
 2. Store the bonus number separately; it is not an eighth main number.
 3. Validate uniqueness and the date-appropriate number range using a confirmed rules version.
-4. Keep MAXMILLIONS, MAXPLUS, EXTRA, and provincial add-ons separate from the main draw.
+4. Keep MAXMILLIONS and MAXPLUS separate from the main draw. Do not import or analyze EXTRA.
 5. Store pre-draw prize configuration separately from post-draw results.
-6. For each side-prize series, store type, prize amount, seven winning numbers, series identifier, winner count, and actual payout when available.
+6. For each MAXPLUS / MAXMILLIONS series, store type, prize amount, seven winning numbers, series identifier, winner count, and actual payout when available.
 7. For main-draw prize tiers, store tier, winner count, and actual payout when officially published.
 8. Compare results against WCLC first and secondary sources as cross-checks.
 9. Investigate every mismatch; never silently choose one value or average sources.
