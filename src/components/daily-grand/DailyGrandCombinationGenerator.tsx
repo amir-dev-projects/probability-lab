@@ -12,6 +12,8 @@ for(let offset=0;offset<binary.length;offset+=6){
  const readBits=(width:number)=>{let result=0;for(let i=0;i<width;i++){const byte=binary.charCodeAt(offset+Math.floor(bit/8));const shift=7-(bit%8);result=(result<<1)|((byte>>shift)&1);bit++;}return result;};
  const dayOffset=readBits(12);
  const mainNumbers=Array.from({length:5},()=>readBits(6));
+ // The packed 48-bit record reserves three padding bits before the Grand Number.
+ bit+=3;
  const grandNumber=readBits(3);
  draws.push({drawDate:new Date(Date.UTC(2016,9,20+dayOffset)).toISOString().slice(0,10),mainNumbers,grandNumber});
 }
