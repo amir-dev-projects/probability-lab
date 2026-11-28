@@ -8,11 +8,12 @@ const binary=atob(packed as string);
 if(binary.length%6!==0) throw new Error("Daily Grand dataset has an invalid encoded length.");
 const draws:DailyGrandDraw[]=[];
 for(let offset=0;offset<binary.length;offset+=6){
- let value=0n;
- for(let byte=0;byte<6;byte++) value=(value<<8n)|BigInt(binary.charCodeAt(offset+byte));
- const dayOffset=Number((value>>36n)&4095n);
- const mainNumbers=[30n,24n,18n,12n,6n].map(shift=>Number((value>>shift)&63n));
- draws.push({drawDate:new Date(Date.UTC(2016,9,20+dayOffset)).toISOString().slice(0,10),mainNumbers,grandNumber:Number(value&7n)});
+ let bit=0;
+ const readBits=(width:number)=>{let result=0;for(let i=0;i<width;i++){const byte=binary.charCodeAt(offset+Math.floor(bit/8));const shift=7-(bit%8);result=(result<<1)|((byte>>shift)&1);bit++;}return result;};
+ const dayOffset=readBits(12);
+ const mainNumbers=Array.from({length:5},()=>readBits(6));
+ const grandNumber=readBits(3);
+ draws.push({drawDate:new Date(Date.UTC(2016,9,20+dayOffset)).toISOString().slice(0,10),mainNumbers,grandNumber});
 }
 const methods:{id:SelectionStrategy;title:string;description:string}[]=[
  {id:"random",title:"Random",description:"Uniform selection. Recommended default."},
