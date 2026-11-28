@@ -1,0 +1,21 @@
+import type {BalancedParameters,DailyGrandDraw,GeneratedTicket,SelectionStrategy} from "./types";
+import {DATASET_VERSION,DEFAULT_BALANCED_PARAMETERS} from "./types";
+const MAIN=Array.from({length:49},(_,i)=>i+1), GRAND=Array.from({length:7},(_,i)=>i+1);
+type Counts=Map<number,number>;
+function normalize(values:number[]){const total=values.reduce((a,b)=>a+b,0);return total?values.map(v=>v/total):values.map(()=>1/values.length);}
+function count(draws:DailyGrandDraw[],domain:number[],pick:(d:DailyGrandDraw)=>number[]):Counts{const m=new Map(domain.map(n=>[n,0]));for(const d of draws)for(const n of pick(d))m.set(n,(m.get(n)??0)+1);return m;}
+function gaps(draws:DailyGrandDraw[],domain:number[],pick:(d:DailyGrandDraw)=>number[]){return domain.map(n=>{let gap=0;for(let i=draws.length-1;i>=0;i--){if(pick(draws[i]).includes(n))return gap;gap++;}return gap;});}
+function weights(long:Counts,recent:Counts,gap:number[],domain:number[]){const a=normalize(domain.map(n=>(long.get(n)??0)+1)),b=normalize(domain.map(n=>(recent.get(n)??0)+1)),c=normalize(gap.map(n=>1+Math.min(n,30)/30));return normalize(domain.map((_,i)=>.5*a[i]+.35*b[i]+.15*c[i]));}
+function sample(domain:number[],w:number[],count:number,random:()=>number){const pool=domain.map((value,i)=>({value,weight:w[i]})),out:number[]=[];while(out.length<count&&pool.length){const total=pool.reduce((s,x)=>s+x.weight,0),target=random()*total;let sum=0,index=pool.length-1;for(let i=0;i<pool.length;i++){sum+=pool[i].weight;if(target<sum){index=i;break;}}out.push(pool[index].value);pool.splice(index,1);}return out.sort((a,b)=>a-b);}
+function pick(domain:number[],w:number[],random:()=>number){const target=random();let sum=0;for(let i=0;i<domain.length;i++){sum+=w[i];if(target<sum)return domain[i];}return domain[domain.length-1];}
+function balanced(n:number[],p:BalancedParameters){const odd=n.filter(x=>x%2).length,low=n.filter(x=>x<=24).length,sum=n.reduce((a,b)=>a+b,0);return odd>=p.minOdd&&odd<=p.maxOdd&&low>=p.minLow&&low<=p.maxLow&&sum>=p.minSum&&sum<=p.maxSum;}
+function experimental(draws:DailyGrandDraw[]){const recent=draws.slice(-100);return {
+ main:weights(count(draws,MAIN,d=>d.mainNumbers),count(recent,MAIN,d=>d.mainNumbers),gaps(draws,MAIN,d=>d.mainNumbers),MAIN),
+ grand:weights(count(draws,GRAND,d=>[d.grandNumber]),count(recent,GRAND,d=>[d.grandNumber]),gaps(draws,GRAND,d=>[d.grandNumber]),GRAND)
+};}
+export function validateDailyGrandDraws(draws:DailyGrandDraw[]){const dates=new Set<string>();let previous="";for(const d of draws){if(!/^\d{4}-\d{2}-\d{2}$/.test(d.drawDate)||Number.isNaN(Date.parse(d.drawDate)))throw Error("Invalid draw date: "+d.drawDate);if(dates.has(d.drawDate))throw Error("Duplicate draw date: "+d.drawDate);if(previous&&d.drawDate<=previous)throw Error("Draws must be chronological.");dates.add(d.drawDate);previous=d.drawDate;if(d.mainNumbers.length!==5||new Set(d.mainNumbers).size!==5||d.mainNumbers.some(n=>!Number.isInteger(n)||n<1||n>49)||!Number.isInteger(d.grandNumber)||d.grandNumber<1||d.grandNumber>7)throw Error("Invalid draw record: "+d.drawDate);}}
+export function generateDailyGrandTickets(draws:DailyGrandDraw[],strategy:SelectionStrategy,ticketCount=1,parameters:BalancedParameters=DEFAULT_BALANCED_PARAMETERS,random:()=>number=Math.random):GeneratedTicket[]{
+ validateDailyGrandDraws(draws);const countTickets=Math.max(1,Math.min(10,Math.floor(ticketCount))),out:GeneratedTicket[]=[],seen=new Set<string>(),w=strategy==="experimental"?experimental(draws):null;let attempts=0;
+ while(out.length<countTickets&&attempts<countTickets*20000){attempts++;const main=w?sample(MAIN,w.main,5,random):sample(MAIN,MAIN.map(()=>1),5,random),grand=w?pick(GRAND,w.grand,random):GRAND[Math.floor(random()*7)];if(strategy==="balanced"&&!balanced(main,parameters))continue;const key=main.join("-")+"|"+grand;if(seen.has(key))continue;seen.add(key);out.push({id:Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9),generatedAt:new Date().toISOString(),game:"Daily Grand",rulesetVersion:"daily-grand-5-of-49-plus-1-of-7-v1",datasetVersion:DATASET_VERSION,strategy,parameters:strategy==="balanced"?{...parameters}:null,mainNumbers:main,grandNumber:grand});}
+ if(out.length!==countTickets)throw Error("Could not create enough unique tickets. Widen the balanced ranges.");return out;
+}
