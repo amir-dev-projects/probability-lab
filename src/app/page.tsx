@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { games } from "@/lib/lottery/games";
 
 export default function Home() {
@@ -45,7 +46,7 @@ export default function Home() {
             <p>{game.description}</p>
             <div className="card-bottom">
               <span>{game.scope}</span>
-              <span className="arrow" aria-hidden="true">↗</span>
+              {game.id === "daily-grand" ? <Link className="card-preview-link" href="/daily-grand">Open preview ↗</Link> : <span className="arrow" aria-hidden="true">↗</span>}
             </div>
           </article>
         ))}

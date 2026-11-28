@@ -1,0 +1,4 @@
+import Link from "next/link";
+import DailyGrandCombinationGenerator from "@/components/daily-grand/DailyGrandCombinationGenerator";
+export const metadata={title:"Daily Grand Generator | LotteryLab",description:"Generate and record Daily Grand combinations with transparent selection methods."};
+export default function DailyGrandPage(){return <main className="shell"><header className="topbar"><Link className="brand" href="/" aria-label="LotteryLab home"><span className="brand-mark">L</span><span>Lottery<span className="brand-light">Lab</span></span></Link><Link className="dg-home-link" href="/">← All games</Link></header><DailyGrandCombinationGenerator/><footer className="dg-site-footer"><span>LOTTERYLAB <span className="footer-muted">· An independent research project</span></span><span>Built for curiosity, not prediction.</span></footer></main>;}

@@ -6,7 +6,7 @@ LotteryLab is a transparent research and educational platform for exploring hist
 
 ## Project status
 
-The initial application foundation is being built. Lotto Max is the first game, followed by Daily Grand and Lotto 6/49.
+The initial application foundation is being built. Lotto Max remains Phase 1, followed by Daily Grand in Phase 2 and Lotto 6/49 in Phase 3. A clearly labelled Daily Grand generator preview is available while Phase 1 continues.
 
 - [x] Next.js + TypeScript application foundation
 - [x] Static export configuration for GitHub Pages
@@ -22,7 +22,7 @@ The initial application foundation is being built. Lotto Max is the first game, 
 
 ## Data sources
 
-See [docs/data-sources.md](docs/data-sources.md) for the source register, rule eras, data corrections, exclusions, and validation process.
+See [docs/data-sources.md](docs/data-sources.md) for Lotto Max source and validation details, and [docs/daily-grand-data.md](docs/daily-grand-data.md) for the Daily Grand preview dataset and generator.
 
 ## Development
 
