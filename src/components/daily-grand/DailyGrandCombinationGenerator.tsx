@@ -4,7 +4,16 @@ import packed from "../../data/daily-grand-draws.json";
 import {generateDailyGrandTickets,validateDailyGrandDraws} from "../../lib/daily-grand/generator";
 import {DATASET_VERSION,DEFAULT_BALANCED_PARAMETERS,type BalancedParameters,type DailyGrandDraw,type GeneratedTicket,type SelectionStrategy} from "../../lib/daily-grand/types";
 const STORAGE="lotterylab.daily-grand.generated.v1";
-const draws=(packed as string[]).map(row=>({drawDate:new Date(Date.UTC(2016,9,20+Number(row.slice(0,4)))).toISOString().slice(0,10),mainNumbers:[0,1,2,3,4].map(i=>Number(row.slice(4+i*2,6+i*2))),grandNumber:Number(row[14])}));
+const binary=atob(packed as string);
+if(binary.length%6!==0) throw new Error("Daily Grand dataset has an invalid encoded length.");
+const draws:DailyGrandDraw[]=[];
+for(let offset=0;offset<binary.length;offset+=6){
+ let value=0n;
+ for(let byte=0;byte<6;byte++) value=(value<<8n)|BigInt(binary.charCodeAt(offset+byte));
+ const dayOffset=Number((value>>36n)&4095n);
+ const mainNumbers=[30n,24n,18n,12n,6n].map(shift=>Number((value>>shift)&63n));
+ draws.push({drawDate:new Date(Date.UTC(2016,9,20+dayOffset)).toISOString().slice(0,10),mainNumbers,grandNumber:Number(value&7n)});
+}
 const methods:{id:SelectionStrategy;title:string;description:string}[]=[
  {id:"random",title:"Random",description:"Uniform selection. Recommended default."},
  {id:"balanced",title:"Balanced",description:"Random selection filtered by your chosen patterns."},
