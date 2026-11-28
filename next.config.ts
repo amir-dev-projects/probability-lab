@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/lotterylab",
+  basePath: "/probability-lab",
   trailingSlash: true,
   images: { unoptimized: true }
 };
