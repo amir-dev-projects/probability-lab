@@ -7,5 +7,5 @@
   "mainNumbersPerDraw": 5,
   "grandNumberRange": [1, 7],
   "datasetVersion": "daily-grand-2016-10-20-to-2026-11-26-v1",
-  "encoding": "Each data row is a 15-character string: four-digit day offset from 2016-10-20, five two-digit main numbers, and one Grand Number digit."
+  "encoding": "The file contains one base64 string encoding 1,045 six-byte records. Each 48-bit record stores a 12-bit day offset from 2016-10-20, five six-bit main numbers, and a three-bit Grand Number."
 }
