@@ -1,0 +1,11 @@
+{
+  "game": "Daily Grand",
+  "drawCount": 1045,
+  "firstDraw": "2016-10-20",
+  "lastDraw": "2026-11-26",
+  "mainNumberRange": [1, 49],
+  "mainNumbersPerDraw": 5,
+  "grandNumberRange": [1, 7],
+  "datasetVersion": "daily-grand-2016-10-20-to-2026-11-26-v1",
+  "encoding": "Each data row is a 15-character string: four-digit day offset from 2016-10-20, five two-digit main numbers, and one Grand Number digit."
+}
